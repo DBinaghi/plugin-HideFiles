@@ -10,3 +10,19 @@ This is a stub. I'm still adding checks to hide original file information on bot
 - search for neater coding for hookAdminHead
 - amend/improve column check in _columnExists (name space is still missing)
 - add hidden files list to admin interface (when required in config)
+
+# Core file changes
+While developing the plugin, I've found out the files/edit page was not firing the two hooks `admin_files_panel_buttons` and `admin_files_panel_fields`, so one has to edit the core file (`admin/themes/default/files/edit.php`) as follows
+  
+```
+  <section class="three columns omega">
+        <div id="save" class="panel">
+            <input type="submit" name="submit" class="submit big green button" value="<?php echo __('Save Changes'); ?>" id="file_edit" /> 
+            <?php if (is_allowed('Files', 'delete')): ?>
+                <?php echo link_to($file, 'delete-confirm', __('Delete'), array('class' => 'big red button delete-confirm')); ?>
+            <?php endif; ?>
+            <?php fire_plugin_hook("admin_files_panel_buttons", array('view'=>$this, 'record'=>$file)); ?>
+            <?php fire_plugin_hook("admin_files_panel_fields", array('view'=>$this, 'record'=>$file)); ?>
+        </div>
+    </section>
+```
