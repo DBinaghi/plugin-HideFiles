@@ -1,0 +1,110 @@
+# Translation for the Hide Files plugin for Omeka.
+# This file is distributed under the same license as the Omeka plugin.
+# Daniele Binaghi <admin@bitoteko.it>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: HideFiles\n"
+"Report-Msgid-Bugs-To: http://github.com/Daniel-KM/Reference/issues\n"
+"POT-Creation-Date: 2021-06-27 12:46-0000\n"
+"PO-Revision-Date: 2021-07-08 10:35-0001\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: HideFilesPlugin.php:13
+msgid "Hidden by Hide Files plugin"
+msgstr ""
+
+#: HideFilesPlugin.php:68
+msgid "%sWarning%s: this will remove all information added by this plugin, thus files will no more be hidden."
+msgstr ""
+
+#: HideFilesPlugin.php:141
+#: list.php:1
+msgid "Hidden Files"
+msgstr ""
+
+#: HideFilesPlugin.php:158
+#: HideFilesPlugin.php:179
+msgid "Public"
+msgstr ""
+
+#: HideFilesPlugin.php:158
+msgid "Yes"
+msgstr ""
+
+#: HideFilesPlugin.php:158
+msgid "No"
+msgstr ""
+
+#: HideFilesPlugin.php:277
+msgid "The file is now Public, so any visitor and user can see it."
+msgstr ""
+
+#: HideFilesPlugin.php:279
+msgid "Access to the file has now been restricted via the Hide Files plugin."
+msgstr ""
+
+#: config_form.php:5
+msgid "Scope"
+msgstr ""
+
+#: config_form.php:9
+msgid "Restrict Users Access"
+msgstr ""
+
+#: config_form.php:13
+msgid 
+"If checked, plugin feature will be applied also to most logged-in users (a hidden file "
+"will be viewable only by Administrators and its owner)."
+msgstr ""
+
+#: config_form.php:21
+msgid "Hide on Public Side"
+msgstr ""
+
+#: config_form.php:25
+msgid "If checked, files will always be hidden on Public side, regardless of whether the user is logged-in or not."
+msgstr ""
+
+#: config_form.php:31
+msgid "Admin"
+msgstr ""
+
+#: config_form.php:35
+msgid "Show Hidden Files List"
+msgstr ""
+
+#: config_form.php:39
+msgid "If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files."
+msgstr ""
+
+#: list.php:7
+msgid "This is a list of all %s files stored in the repository and hidden via the <b>Hide Files</b> plugin."
+msgstr ""
+
+#: list.php:9
+msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."
+msgstr ""
+
+#: list.php:18
+msgid "Filename"
+msgstr ""
+
+#: list.php:19
+msgid "Date Added"
+msgstr ""
+
+#: list.php:20
+msgid "Item"
+msgstr ""
+
+#: list.php:53
+msgid "There seems to be no file stored in the repository and hidden via the <b>Hide Files</b> plugin."
+msgstr ""
