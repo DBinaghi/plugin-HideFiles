@@ -132,10 +132,13 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			if ($action == 'edit') {
 				// removes "edit" link from hidden files in items/edit files tab
 				queue_js_string("
+				queue_js_string("
 					document.addEventListener('DOMContentLoaded', function() {
-						var link = document.getElementById('file-list').getElementsByClassName('edit');
-						while (link.length > 0) {
-							link[0].parentNode.remove();
+						var links = document.getElementById('file-list').getElementsByClassName('edit');
+						for (var i = links.length-1; i > -1; i--) {
+							if (links[i].parentNode.parentNode.parentNode.innerHTML.indexOf('" . HIDEFILES_THUMBNAIL . "') !== -1) {
+								links[i].parentNode.remove();
+							}
 						}
 					}, false);
 				");	
