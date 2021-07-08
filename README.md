@@ -30,7 +30,7 @@ While developing the plugin, I've found out the files/edit page was not firing t
 - amend/improve column check in _columnExists function (name space clause is missing, as I could not find a way to get the db’s name);
 
 ## Troubleshooting
-See online issues on the <a href="https://github.com/DBinaghi/plugin-RelatedContent/issues" target="_blank">plugin issues</a> page on GitHub.
+See online issues on the <a href="https://github.com/DBinaghi/plugin-HideFiles/issues" target="_blank">plugin issues</a> page on GitHub.
 
 ## License
 This plugin is published under the <a href="https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html" target="_blank">CeCILL v2.1</a> licence, compatible with <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GNU/GPL</a> and approved by <a href="https://www.fsf.org/" target="_blank">FSF</a> and <a href="http://opensource.org/" target="_blank">OSI</a>.
