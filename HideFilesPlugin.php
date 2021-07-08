@@ -22,6 +22,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		'config',
 		'config_form',
 		'admin_head',
+		'public_head',
 		'admin_files_show_sidebar',
 		'admin_files_panel_buttons',
 		'after_save_file',
@@ -123,19 +124,43 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				}	
 			} elseif ($action == 'edit') {
 				if ($this->_isFileHidden($file)) {
-					// TODO: should not allow access to this page
+					// blocks access to admin file edit page, showing show page instead
+					queue_js_string("window.location.href = '" . url('files/show/' . $file->id) . "'");
 				}				
 			}
 		} elseif ($controller == 'items') {
 			if ($action == 'edit') {
-				// TODO: should remove "edit" link from hidden files in files tab
+				// removes "edit" link from hidden files in items/edit files tab
+				queue_js_string("
+					document.addEventListener('DOMContentLoaded', function() {
+						var link = document.getElementById('file-list').getElementsByClassName('edit');
+						while (link.length > 0) {
+							link[0].parentNode.remove();
+						}
+					}, false);
+				");	
 			}
 		}
 	}
 
-    public function filterAdminNavigationMain($nav)
-    {
-        if ((bool)get_option('hide_files_show_files_list')) {
+	public function hookPublicHead($args)
+	{
+		$request = Zend_Controller_Front::getInstance()->getRequest();
+		$controller = $request->getControllerName();
+		$action = $request->getActionName();
+
+		if ($controller == 'files' && $action == 'show') {
+			$file = get_current_record('file', false);
+			if ($this->_isFileHidden($file)) {
+				// blocks access to public file show page, showing item page instead
+				queue_js_string("window.location.href = '" . url('items/show/' . $file->item_id) . "'");
+ 			}
+		}
+	}
+
+	public function filterAdminNavigationMain($nav)
+	{
+		if ((bool)get_option('hide_files_show_files_list')) {
 			$user = current_user();
 			$nav[] = array(
 				'label' => __('Hidden Files'),
@@ -143,8 +168,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			);
 		}
 		
-        return $nav;
-    }
+		return $nav;
+	}
 	
 	public function hookAdminFilesShowSidebar($args)
 	{
@@ -153,16 +178,16 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 	
 	protected function _adminRecordsShowSidebar($args)
-    {
-        $html = '<div class="public-featured panel">';
+	{
+		$html = '<div class="public-featured panel">';
 		$html .= '<p><span class="label">' . __('Public') . ': </span>' . ($this->_isFilePublic($args['file']) ? __('Yes') : __('No')) . '</p>';
-        $html .= '</div>';
+		$html .= '</div>';
 
  		// moves panel just under edit buttons
 		$html .= '<script>jQuery(".public-featured").insertAfter(jQuery("#edit"));</script>';
 
 		echo $html;
-    }
+	}
 	
 	public function hookAdminFilesPanelButtons($args)
 	{
@@ -170,23 +195,23 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 	
 	protected function _adminRecordsPanelButtons($args)
-    {
-        $view = $args['view'];
+	{
+		$view = $args['view'];
 		
 		$html  = '<div id="public-featured">';
 		if (is_allowed('Items', 'makePublic') ):
-            $html .= '<div class="public">';
-            $html .= '<label for="public">' . __('Public') . ':</label>';
-            $html .= $view->formCheckbox('public', $this->_isFilePublic($args['record']), array(), array('1', '0'));
-            $html .= '</div>';
-        endif;
-        $html .= '</div> <!-- end public-featured  div -->';
+			$html .= '<div class="public">';
+			$html .= '<label for="public">' . __('Public') . ':</label>';
+			$html .= $view->formCheckbox('public', $this->_isFilePublic($args['record']), array(), array('1', '0'));
+			$html .= '</div>';
+		endif;
+		$html .= '</div> <!-- end public-featured  div -->';
 		
 		// moves panel just under edit buttons
 		$html .= '<script>jQuery("#public-featured").insertAfter(jQuery("#edit"));</script>';
 
-        echo $html;
-    }
+		echo $html;
+	}
 		
 	protected function _isFilePublic($file)
 	{
@@ -243,14 +268,14 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 	
 	public function filterFileMarkupOptions($options, $args)
-    {
-        $file = $args['file'];
+	{
+		$file = $args['file'];
 		if ($this->_isFileHidden($file)) {
 			$options['linkToFile'] = false;
 		}
 		
-        return $options;
-    }
+		return $options;
+	}
 	
 	public function filterImageTagAttributes($attrs, $args)
 	{
@@ -278,12 +303,12 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		} else {
 			$message = __('Access to the file has now been restricted via the Hide Files plugin.');
 		}
-        $flash->addMessage($message, 'alert');
+		$flash->addMessage($message, 'alert');
 	}
 
 	public function hookFilesBrowseSql($args) 
 	{
-		// Filters out all public files and sort by added date
+		// Filters out all public files and sort results by added date
 		$select = $args['select'];
 		$select->where("files.public = ?", 0);
 		$select->order("files.added DESC");
@@ -293,11 +318,11 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	{
 		$db = get_db();
 		$sql = "
-            SELECT COLUMN_NAME
-            FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = '{$this->_db->File}';
+			SELECT COLUMN_NAME
+			FROM INFORMATION_SCHEMA.COLUMNS
+			WHERE TABLE_NAME = '{$this->_db->File}';
 		";
-        $result = $db->fetchCol($sql);
+		$result = $db->fetchCol($sql);
 		return in_array($columnName, $result);
 	}
 }
