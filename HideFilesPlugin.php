@@ -24,10 +24,12 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		'admin_head',
 		'admin_files_show_sidebar',
 		'admin_files_panel_buttons',
-		'after_save_file'
+		'after_save_file',
+		'files_browse_sql'
 	);
 
 	protected $_filters = array(
+		'admin_navigation_main',
 		'file_markup',
 		'file_markup_options',
 		'image_tag_attributes'
@@ -37,23 +39,20 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	{
 		if (!self::_columnExists('public')) {
 			$db = get_db();
-			$sql = "ALTER TABLE `{$this->_db->File}` ADD COLUMN `public` TinyInt(4) DEFAULT 1";
-			$db->query($sql);
-			$sql = "UPDATE `{$this->_db->File}` SET `public` = 1";
-			$db->query($sql);
+			$db->query("ALTER TABLE {$db->File} ADD COLUMN `public` TinyInt(4) DEFAULT 1");
+			$db->query("UPDATE {$db->File} SET `public` = 1");
 		}
 
-		set_option('hide_files_restrict_users_access', 0);
-		set_option('hide_files_public_side_hide', 1);
-		set_option('hide_files_show_files_list', 0);
+		set_option('hide_files_restrict_users_access', 1);
+		set_option('hide_files_public_side_hide', 0);
+		set_option('hide_files_show_files_list', 1);
 	}
 
 	public function hookUninstall()
 	{
 		if (self::_columnExists('public')) {
 			$db = get_db();
-			$sql = "ALTER TABLE `{$this->_db->File}` DROP COLUMN `public`";
-			$db->query($sql);
+			$db->query("ALTER TABLE {$db->File} DROP COLUMN `public`");
 		}
 
 		delete_option('hide_files_restrict_users_access');
@@ -66,8 +65,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	 */
 	public function hookUninstallMessage()
 	{
-		echo __('%sWarning%s: this will remove the Hide Files information added by this plugin, 
-				thus files will no more be hidden.%s', '<p><strong>', '</strong>', '</p>');
+		echo '<p>' . __('%sWarning%s: this will remove all information added by this plugin, 
+				thus files will no more be hidden.', '<strong>', '</strong>') . '</p>';
 	}
 
 	public function hookInitialize()
@@ -133,6 +132,19 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			}
 		}
 	}
+
+    public function filterAdminNavigationMain($nav)
+    {
+        if ((bool)get_option('hide_files_show_files_list')) {
+			$user = current_user();
+			$nav[] = array(
+				'label' => __('Hidden Files'),
+				'uri' => url('hide-files/files/list'),
+			);
+		}
+		
+        return $nav;
+    }
 	
 	public function hookAdminFilesShowSidebar($args)
 	{
@@ -216,12 +228,15 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	{
 		$file = $args['file'];
 		if ($this->_isFileHidden($file)) {
-			// removes link to original file
-			$pattern = "!href\s*=\s*(['\"])(https?:\/\/.+?)(['\"])!";
-			$html = preg_replace($pattern, 'href=$1$1', $html);
-			// replaces thumbnail with plugins' one
-			$pattern = "!(?<=src\=['\"]).+(?=['\"](\s|\/\>))!";
-			$html = preg_replace($pattern, HIDEFILES_THUMBNAIL, $html);
+			if (strpos($html, HIDEFILES_THUMBNAIL) < 0) {
+				// replaces thumbnail with plugins' one
+				$pattern = "!(?<=src\=['\"]).+(?=['\"](\s|\/\>))!";
+				$html = preg_replace($pattern, HIDEFILES_THUMBNAIL, $html);
+			} else {
+				// removes link to original file
+				$pattern = "!href\s*=\s*(['\"])(https?:\/\/.+?)(['\"])!";
+				$html = preg_replace($pattern, 'href=$1$1', $html);
+			}
 		}
 
 		return $html;
@@ -250,6 +265,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public function hookAfterSaveFile($args) 
 	{
 		$post = $args['post'];
+		if (!isset($post['public'])) return;
 		$isPublic = $post['public'];
 	
 		$db = get_db();
@@ -260,9 +276,17 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		if ($isPublic) {
 			$message = __('The file is now Public, so any visitor and user can see it.');
 		} else {
-			$message = __('Access to the file has been restricted via the Hide Files plugin.');
+			$message = __('Access to the file has now been restricted via the Hide Files plugin.');
 		}
         $flash->addMessage($message, 'alert');
+	}
+
+	public function hookFilesBrowseSql($args) 
+	{
+		// Filters out all public files and sort by added date
+		$select = $args['select'];
+		$select->where("files.public = ?", 0);
+		$select->order("files.added DESC");
 	}
 	
 	protected function _columnExists($columnName)
