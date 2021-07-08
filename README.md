@@ -26,8 +26,8 @@ While developing the plugin, I've found out the files/edit page was not firing t
 ```
 
 ## ToDo
-- look for more efficient hookAdminHead coding (I’m using DOM there, jquery would have been more efficient but if I try to load it it gets commented out in the page’s head);
-- amend/improve column check in _columnExists function (name space clause is missing, as I could not find a way to get the db’s name);
+- look for more efficient `hookAdminHead` coding (I’m using DOM there, jquery would have been more efficient but if I try to load it it gets commented out in the page’s head);
+- amend/improve column check in `_columnExists` function (name space clause is missing, as I could not find a way to get the db’s name);
 
 ## Troubleshooting
 See online issues on the <a href="https://github.com/DBinaghi/plugin-HideFiles/issues" target="_blank">plugin issues</a> page on GitHub.
