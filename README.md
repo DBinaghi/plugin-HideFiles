@@ -9,7 +9,7 @@ Use it at your own risk.
 It’s always recommended to backup your files and your databases and to check your archives regularly so you can roll back if needed.
 
 ## Core file changes
-While developing the plugin, I've found out the files/edit page was not firing the two hooks `admin_files_panel_buttons` and `admin_files_panel_fields`, so one has to edit the core file (`admin/themes/default/files/edit.php`) as follows
+While developing the plugin, I've found out the files/edit page was not firing the two hooks `admin_files_panel_buttons` and `admin_files_panel_fields`; in order to use this plugin, one has to edit the core file `admin/themes/default/files/edit.php` as follows
   
 ```
   <section class="three columns omega">
@@ -18,6 +18,7 @@ While developing the plugin, I've found out the files/edit page was not firing t
             <?php if (is_allowed('Files', 'delete')): ?>
                 <?php echo link_to($file, 'delete-confirm', __('Delete'), array('class' => 'big red button delete-confirm')); ?>
             <?php endif; ?>
+            
             <?php fire_plugin_hook("admin_files_panel_buttons", array('view'=>$this, 'record'=>$file)); ?>
             <?php fire_plugin_hook("admin_files_panel_fields", array('view'=>$this, 'record'=>$file)); ?>
         </div>
@@ -25,7 +26,6 @@ While developing the plugin, I've found out the files/edit page was not firing t
 ```
 
 ## ToDo
-- block/limit access to files/edit page (admin side); at least, make it impossible to change the public/private flag to those who are not supposed to do it;
 - look for more efficient hookAdminHead coding (I’m using DOM there, jquery would have been more efficient but if I try to load it it gets commented out in the page’s head);
 - amend/improve column check in _columnExists function (name space clause is missing, as I could not find a way to get the db’s name);
 
