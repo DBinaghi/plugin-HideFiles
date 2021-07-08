@@ -1,6 +1,6 @@
 # Translation for the Hide Files plugin for Omeka.
 # This file is distributed under the same license as the Omeka plugin.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Daniele Binaghi <admin@bitoteko.it>, 2021.
 #
 #, fuzzy
 msgid ""
