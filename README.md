@@ -10,7 +10,7 @@ It’s always recommended to backup your files and your databases and to check y
 
 ## Core file changes
 ~~While developing the plugin, I've found out the files/edit page was not firing the two hooks `admin_files_panel_buttons` and `admin_files_panel_fields`; in order to use this plugin, one has to edit the core file `admin/themes/default/files/edit.php` as follows~~
-Core code was fixed with https://github.com/omeka/Omeka/commit/c524e4de14741334586f74d58abd6350d72053c3 fix.
+Core code was fixed with https://github.com/omeka/Omeka/commit/c524e4de14741334586f74d58abd6350d72053c3 fix, so no core file change is needed now.
 
 ## ToDo
 - Look for more efficient `hookAdminHead` coding (I’m using DOM there, jquery would have been more efficient but if I try to load it it gets commented out in the page’s head);
