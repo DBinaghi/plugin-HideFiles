@@ -27,7 +27,7 @@ class HideFiles_FilesController extends Omeka_Controller_AbstractActionControlle
         $this->_helper->db->setDefaultModelName('File');
     }
 
-    public function listAction()
+    public function browseAction()
     {
         // Respect only GET parameters when browsing.
         $this->getRequest()->setParamSources(array('_GET'));
