@@ -9,6 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://github.com/Daniel-KM/Reference/issues\n"
 "POT-Creation-Date: 2021-06-27 12:46-0000\n"
 "PO-Revision-Date: 2021-07-08 10:35-0001\n"
+"PO-Revision-Date: 2021-10-11 14:55-0001\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Daniele Binaghi <admin@bitoteko.it>\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -27,7 +28,7 @@ msgid "%sWarning%s: this will remove all information added by this plugin, thus 
 msgstr "$sAttenzione$s: questo rimuoverà tutte le informazioni aggiunte da questo plugin, di conseguenza nessun file sarà più nascosto."
 
 #: HideFilesPlugin.php:141
-#: list.php:1
+#: browse.php:1
 msgid "Hidden Files"
 msgstr "File nascosti"
 
@@ -50,7 +51,7 @@ msgstr "Il file è ora pubblico, ovvero ogni visitatore ed utente potrà vederlo
 
 #: HideFilesPlugin.php:279
 msgid "Access to the file has now been restricted via the Hide Files plugin."
-msgstr "L'accesso al file è stato ora restritto per mezzo del plugin Hide Files."
+msgstr "L'accesso al file è stato ora ristretto per mezzo del plugin Hide Files."
 
 #: config_form.php:5
 msgid "Scope"
@@ -63,10 +64,10 @@ msgstr "Restringi accesso utenti"
 #: config_form.php:13
 msgid 
 "If checked, plugin feature will be applied also to most logged-in users (a hidden file "
-"will be viewable only by Administrators and its owner)."
+"will be viewable only by its owner and Administrators)."
 msgstr 
 "Se cliccata, le funzionalità del plugin verranno applicate anche alla maggior parte degli "
-"utenti (un file nascosto sarà visibile solo agli Amministratori e al suo proprietario).
+"utenti (un file nascosto sarà visibile solo al suo proprietario ed agli Amministratori).
 
 #: config_form.php:21
 msgid "Hide on Public Side"
@@ -88,26 +89,36 @@ msgstr "Mostra lista file nascosti"
 msgid "If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files."
 msgstr "Se selezionata, verrà aggiunta una voce al menu di navigazione principale per mostrare una lista di tutti i file nascosti."
 
-#: list.php:7
-msgid "This is a list of all %s files stored in the repository and hidden via the <b>Hide Files</b> plugin."
-msgstr "Questa è una lista di tutti i %s file immagazzinati nell'archivio e nascosti grazie al plugin <b>Hide Files</b>."
+#: config_form.php:47
+msgid "Show Original Filename"
+msgstr "Mostra nome file originale"
 
-#: list.php:9
+#: config_form.php:51
+msgid "If checked, when browsing hidden files the original filename will be shown."
+msgstr "Se selezionata, nella lista di file nascosti verrà mostrato il nome file originale."
+
+#: browse.php:7
+msgid "This is the file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
+msgid_plural "These are the %s files stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
+msgstr[0] "Questo è il file immagazzinato nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
+msgstr[1] "Questi sono i %s file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
+
+#: browse.php:9
 msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."
 msgstr "Clicca sul nome di un file per accedervi, o sul nome di un documento per accedere al documento associato."
 
-#: list.php:18
+#: browse.php:18
 msgid "Filename"
 msgstr "Nome del file"
 
-#: list.php:19
+#: browse.php:19
 msgid "Date Added"
 msgstr "Data aggiunta"
 
-#: list.php:20
+#: browse.php:20
 msgid "Item"
 msgstr "Documento"
 
-#: list.php:53
-msgid "There seems to be no file stored in the repository and hidden via the <b>Hide Files</b> plugin."
-msgstr "Non sembrano esserci file immagazzinati nell'archivio e nascosti grazie al plugin <b>Hide Files</b>."
+#: browse.php:53
+msgid "There seems to be no file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
+msgstr "Non sembrano esserci file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."

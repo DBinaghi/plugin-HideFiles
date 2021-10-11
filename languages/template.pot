@@ -9,6 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://github.com/Daniel-KM/Reference/issues\n"
 "POT-Creation-Date: 2021-06-27 12:46-0000\n"
 "PO-Revision-Date: 2021-07-08 10:35-0001\n"
+"PO-Revision-Date: 2021-10-11 14:55-0001\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +27,7 @@ msgid "%sWarning%s: this will remove all information added by this plugin, thus 
 msgstr ""
 
 #: HideFilesPlugin.php:141
-#: list.php:1
+#: browse.php:1
 msgid "Hidden Files"
 msgstr ""
 
@@ -85,26 +86,36 @@ msgstr ""
 msgid "If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files."
 msgstr ""
 
-#: list.php:7
-msgid "This is a list of all %s files stored in the repository and hidden via the <b>Hide Files</b> plugin."
+#: config_form.php:47
+msgid "Show Original Filename"
 msgstr ""
 
-#: list.php:9
+#: config_form.php:51
+msgid "If checked, when browsing hidden files the original filename will be shown."
+msgstr ""
+
+#: browse.php:7
+msgid "This is the file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
+msgid_plural "These are the %s files stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
+msgstr[0] "Questo è il file immagazzinato nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
+msgstr[1] "Questi sono i %s file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
+
+#: browse.php:9
 msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."
 msgstr ""
 
-#: list.php:18
+#: browse.php:18
 msgid "Filename"
 msgstr ""
 
-#: list.php:19
+#: browse.php:19
 msgid "Date Added"
 msgstr ""
 
-#: list.php:20
+#: browse.php:20
 msgid "Item"
 msgstr ""
 
-#: list.php:53
-msgid "There seems to be no file stored in the repository and hidden via the <b>Hide Files</b> plugin."
+#: browse.php:53
+msgid "There seems to be no file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
 msgstr ""
