@@ -10,7 +10,7 @@
 	</div>
 	<div class="inputs five columns omega">
 		<p class="explanation">
-			<?php echo __('If checked, plugin feature will be applied also to most logged-in users (a hidden file will be viewable only by Administrators and its owner).'); ?>
+			<?php echo __('If checked, plugin feature will be applied also to most logged-in users (a hidden file will be viewable only its owner and by Administrators).'); ?>
 		</p>
 		<?php echo $view->formCheckbox('hide_files_restrict_users_access', get_option('hide_files_restrict_users_access'), array(), array('1', '0')); ?>
 	</div>
@@ -39,5 +39,17 @@
 			<?php echo __('If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files.'); ?>
 		</p>
 		<?php echo $view->formCheckbox('hide_files_show_files_list', get_option('hide_files_show_files_list'), array(), array('1', '0')); ?>
+	</div>
+</div>
+
+<div class="field">
+	<div class="two columns alpha">
+		<?php echo $view->formLabel('hide_files_show_original_filename', __('Show Original Filename')); ?>
+	</div>
+	<div class="inputs five columns omega">
+		<p class="explanation">
+			<?php echo __('If checked, when browsing hidden files the original filename will be shown.'); ?>
+		</p>
+		<?php echo $view->formCheckbox('hide_files_show_original_filename', get_option('hide_files_show_original_filename'), array(), array('1', '0')); ?>
 	</div>
 </div>

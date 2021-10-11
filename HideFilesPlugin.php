@@ -38,8 +38,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 	public function hookInstall()
 	{
-		if (!self::_columnExists('public')) {
-			$db = get_db();
+		$db = get_db();
+		if (!self::_columnExists($db->File, 'public')) {
 			$db->query("ALTER TABLE {$db->File} ADD COLUMN `public` TinyInt(4) DEFAULT 1");
 			$db->query("UPDATE {$db->File} SET `public` = 1");
 		}
@@ -47,11 +47,12 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		set_option('hide_files_restrict_users_access', 1);
 		set_option('hide_files_public_side_hide', 0);
 		set_option('hide_files_show_files_list', 1);
+		set_option('hide_files_show_original_filename', 1);
 	}
 
 	public function hookUninstall()
 	{
-		if (self::_columnExists('public')) {
+		if (self::_columnExists($db->File, 'public')) {
 			$db = get_db();
 			$db->query("ALTER TABLE {$db->File} DROP COLUMN `public`");
 		}
@@ -59,6 +60,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		delete_option('hide_files_restrict_users_access');
 		delete_option('hide_files_public_side_hide');
 		delete_option('hide_files_show_files_list');
+		delete_option('hide_files_show_original_filename');
 	}
 	
 	/**
@@ -81,6 +83,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		set_option('hide_files_restrict_users_access', $post['hide_files_restrict_users_access']);
 		set_option('hide_files_public_side_hide', $post['hide_files_public_side_hide']);
 		set_option('hide_files_show_files_list', $post['hide_files_show_files_list']);
+		set_option('hide_files_show_original_filename', $post['hide_files_show_original_filename']);
 	}
 	
 	public function hookConfigForm()
@@ -132,7 +135,6 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			if ($action == 'edit') {
 				// removes "edit" link from hidden files in items/edit files tab
 				queue_js_string("
-				queue_js_string("
 					document.addEventListener('DOMContentLoaded', function() {
 						var links = document.getElementById('file-list').getElementsByClassName('edit');
 						for (var i = links.length-1; i > -1; i--) {
@@ -167,7 +169,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			$user = current_user();
 			$nav[] = array(
 				'label' => __('Hidden Files'),
-				'uri' => url('hide-files/files/list'),
+				'uri' => url('hide-files/files/browse'),
 			);
 		}
 		
@@ -317,13 +319,13 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		$select->order("files.added DESC");
 	}
 	
-	protected function _columnExists($columnName)
+	protected function _columnExists($tableName, $columnName)
 	{
 		$db = get_db();
 		$sql = "
 			SELECT COLUMN_NAME
 			FROM INFORMATION_SCHEMA.COLUMNS
-			WHERE TABLE_NAME = '{$this->_db->File}';
+			WHERE TABLE_NAME = '$tableName';
 		";
 		$result = $db->fetchCol($sql);
 		return in_array($columnName, $result);
