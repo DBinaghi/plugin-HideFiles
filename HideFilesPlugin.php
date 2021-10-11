@@ -263,9 +263,10 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				$pattern = "!(?<=src\=['\"]).+(?=['\"](\s|\/\>))!";
 				$html = preg_replace($pattern, HIDEFILES_THUMBNAIL, $html);
 			} else {
-				// removes link to original file
-				$pattern = "!href\s*=\s*(['\"])(https?:\/\/.+?)(['\"])!";
-				$html = preg_replace($pattern, 'href=$1$1', $html);
+				//$pattern = "!href\s*=\s*(['\"])(https?:\/\/.+?)['\"]!";
+				//$html = preg_replace($pattern, 'href=$1$1', $html);
+				$pattern = "/<[Aa] [^>]*>(.*?)<\/[Aa]>/";
+				$html = preg_replace($pattern, '$1', $html);
 			}
 		}
 
