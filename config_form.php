@@ -10,7 +10,7 @@
 	</div>
 	<div class="inputs five columns omega">
 		<p class="explanation">
-			<?php echo __('If checked, plugin feature will be applied also to most logged-in users (a hidden file will be viewable only its owner and by Administrators).'); ?>
+			<?php echo __('If checked, files will be hidden also from most logged-in users (only owner and Administrators will be able to see them).'); ?>
 		</p>
 		<?php echo $view->formCheckbox('hide_files_restrict_users_access', get_option('hide_files_restrict_users_access'), array(), array('1', '0')); ?>
 	</div>
@@ -28,17 +28,29 @@
 	</div>
 </div>
 
-<h2><?php echo __('Admin'); ?></h2>
+<h2><?php echo __('File List'); ?></h2>
 
 <div class="field">
 	<div class="two columns alpha">
-		<?php echo $view->formLabel('hide_files_show_files_list', __('Show Hidden Files List')); ?>
+		<?php echo $view->formLabel('hide_files_show_file_list', __('Show Hidden Files List')); ?>
 	</div>
 	<div class="inputs five columns omega">
 		<p class="explanation">
 			<?php echo __('If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files.'); ?>
 		</p>
-		<?php echo $view->formCheckbox('hide_files_show_files_list', get_option('hide_files_show_files_list'), array(), array('1', '0')); ?>
+		<?php echo $view->formCheckbox('hide_files_show_file_list', get_option('hide_files_show_file_list'), array(), array('1', '0')); ?>
+	</div>
+</div>
+
+<div class="field">
+	<div class="two columns alpha">
+		<?php echo $view->formLabel('hide_files_expand_access_file_list', __('Expand Access')); ?>
+	</div>
+	<div class="inputs five columns omega">
+		<p class="explanation">
+			<?php echo __('If checked, access to the File List will be granted to all logged-in users.'); ?>
+		</p>
+		<?php echo $view->formCheckbox('hide_files_expand_access_file_list', get_option('hide_files_expand_access_file_list'), array(), array('1', '0')); ?>
 	</div>
 </div>
 
@@ -48,7 +60,7 @@
 	</div>
 	<div class="inputs five columns omega">
 		<p class="explanation">
-			<?php echo __('If checked, when browsing hidden files the original filename will be shown.'); ?>
+			<?php echo __('If checked, the original filenames will be shown in the File List.'); ?>
 		</p>
 		<?php echo $view->formCheckbox('hide_files_show_original_filename', get_option('hide_files_show_original_filename'), array(), array('1', '0')); ?>
 	</div>
