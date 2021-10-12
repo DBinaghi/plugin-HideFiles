@@ -3,7 +3,7 @@
 /**
  * Hide Files plugin for Omeka
  * 
- * @version $Id$
+ * @version 1.3
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @copyright Daniele Binaghi, 2021
  * @package HideFiles
@@ -21,6 +21,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		'initialize',
 		'config',
 		'config_form',
+		'define_acl', 
 		'admin_head',
 		'public_head',
 		'admin_files_show_sidebar',
@@ -46,7 +47,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 		set_option('hide_files_restrict_users_access', 1);
 		set_option('hide_files_public_side_hide', 0);
-		set_option('hide_files_show_files_list', 1);
+		set_option('hide_files_show_file_list', 1);
+		set_option('hide_files_expand_access_file_list', 0);
 		set_option('hide_files_show_original_filename', 1);
 	}
 
@@ -59,7 +61,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 		delete_option('hide_files_restrict_users_access');
 		delete_option('hide_files_public_side_hide');
-		delete_option('hide_files_show_files_list');
+		delete_option('hide_files_show_file_list');
+		delete_option('hide_files_expand_access_file_list');
 		delete_option('hide_files_show_original_filename');
 	}
 	
@@ -82,7 +85,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		$post = $args['post'];
 		set_option('hide_files_restrict_users_access', $post['hide_files_restrict_users_access']);
 		set_option('hide_files_public_side_hide', $post['hide_files_public_side_hide']);
-		set_option('hide_files_show_files_list', $post['hide_files_show_files_list']);
+		set_option('hide_files_show_file_list', $post['hide_files_show_file_list']);
+		set_option('hide_files_expand_access_file_list', $post['hide_files_expand_access_file_list']);
 		set_option('hide_files_show_original_filename', $post['hide_files_show_original_filename']);
 	}
 	
@@ -91,6 +95,22 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		include 'config_form.php';
 	}
 	
+	/**
+	 * Define the plugin's access control list.
+	 *
+	 * @return void
+	 */
+	public function hookDefineAcl($args)
+	{
+		$args['acl']->addResource('HideFiles_Index');
+
+		if ((bool)get_option('hide_files_expand_access_file_list')) {
+			// contributors (and all derived roles) are able to access
+			$acl = $args['acl'];
+			$acl->allow('contributor', 'HideFiles_Index', array('index', 'browse'));
+		}
+	}
+
 	public function hookAdminHead($args)
 	{
 		$request = Zend_Controller_Front::getInstance()->getRequest();
@@ -165,11 +185,12 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 	public function filterAdminNavigationMain($nav)
 	{
-		if ((bool)get_option('hide_files_show_files_list')) {
-			$user = current_user();
+		if ((bool)get_option('hide_files_show_file_list')) {
 			$nav[] = array(
 				'label' => __('Hidden Files'),
-				'uri' => url('hide-files/files/browse'),
+				'uri' => url('hide-files'),
+				'resource' => 'HideFiles_Index', 
+				'privilege' => 'index'
 			);
 		}
 		
@@ -263,6 +284,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				$pattern = "!(?<=src\=['\"]).+(?=['\"](\s|\/\>))!";
 				$html = preg_replace($pattern, HIDEFILES_THUMBNAIL, $html);
 			} else {
+				// removes link to original file
 				//$pattern = "!href\s*=\s*(['\"])(https?:\/\/.+?)['\"]!";
 				//$html = preg_replace($pattern, 'href=$1$1', $html);
 				$pattern = "/<[Aa] [^>]*>(.*?)<\/[Aa]>/";
