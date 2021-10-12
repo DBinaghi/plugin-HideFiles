@@ -19,7 +19,8 @@
 							array(
 								__('Filename') => 'filename',
 								__('Date Added') => 'added',
-								__('Item') => 'item_id'
+								__('Item') => 'item_id',
+								__('Owner') => 'owner_id'
 							),
 							array('link_tag' => 'th scope="col"', 'list_tag' => '')
 						);
@@ -30,6 +31,7 @@
 				<?php $key = 0; ?>
 				<?php $showOriginalFilename = (bool)get_option(hide_files_show_original_filename); ?>
 				<?php foreach ($files as $file): ?>
+					<?php $item = get_record_by_id('item', $file->item_id); ?>
 					<tr class="<?php echo (++$key%2 == 1 ? 'odd' : 'even'); ?>">
 						<td>
 							<?php
@@ -44,8 +46,12 @@
 						</td>
 						<td>
 							<?php
-								$item = get_record_by_id('item', $file->item_id);
-								echo '<a href="' . url('/items/show/' . $file->item_id) . '">' . metadata($item, 'display_title', array('no_escape' => true)) . '</a>';
+								echo '<a href="' . url('/items/show/' . $file->item_id) . '">' . metadata($item, 'display_title', array('no_escape' => true, 'snippet' => 50)) . '</a>';
+							?>
+						</td>
+						<td>
+							<?php
+								echo strip_formatting(metadata($item->getOwner(), 'name'));
 							?>
 						</td>
 					</tr>
