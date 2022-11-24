@@ -10,7 +10,6 @@ msgstr ""
 "POT-Creation-Date: 2021-06-27 12:46-0000\n"
 "PO-Revision-Date: 2021-07-08 10:35-0001\n"
 "PO-Revision-Date: 2021-10-11 14:55-0001\n"
-"PO-Revision-Date: 2021-10-12 10:24-0001\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +61,7 @@ msgid "Restrict Users Access"
 msgstr ""
 
 #: config_form.php:13
-msgid "If checked, files will be hidden also from most logged-in users (only owner and Administrators will be able to see them)."
+msgid "If checked, plugin features will be applied also to most logged-in users (a hidden file will be viewable only by its owner and by Administrators)."
 msgstr ""
 
 #: config_form.php:21
@@ -74,7 +73,7 @@ msgid "If checked, files will always be hidden on Public side, regardless of whe
 msgstr ""
 
 #: config_form.php:31
-msgid "File List"
+msgid "Admin"
 msgstr ""
 
 #: config_form.php:35
@@ -86,26 +85,18 @@ msgid "If checked, a link will be added to the main Admin navigation menu to sho
 msgstr ""
 
 #: config_form.php:47
-msgid "Expand Access"
-msgstr ""
-
-#: config_form.php:51
-msgid "If checked, access to the File List will be granted to all logged-in users."
-msgstr ""
-
-#: config_form.php:59
 msgid "Show Original Filename"
 msgstr ""
 
-#: config_form.php:63
-msgid "If checked, the original filenames will be shown in the File List."
+#: config_form.php:51
+msgid "If checked, when browsing hidden files the original filename will be shown."
 msgstr ""
 
 #: browse.php:7
 msgid "This is the file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
 msgid_plural "These are the %s files stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Questo è il file immagazzinato nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
+msgstr[1] "Questi sono i %s file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
 
 #: browse.php:9
 msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."

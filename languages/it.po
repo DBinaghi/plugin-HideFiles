@@ -10,7 +10,6 @@ msgstr ""
 "POT-Creation-Date: 2021-06-27 12:46-0000\n"
 "PO-Revision-Date: 2021-07-08 10:35-0001\n"
 "PO-Revision-Date: 2021-10-11 14:55-0001\n"
-"PO-Revision-Date: 2021-10-12 10:24-0001\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Daniele Binaghi <admin@bitoteko.it>\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -63,8 +62,8 @@ msgid "Restrict Users Access"
 msgstr "Restringi accesso utenti"
 
 #: config_form.php:13
-msgid "If checked, files will be hidden also from most logged-in users (only owner and Administrators will be able to see them)."
-msgstr "Se selezionata, i file saranno nascosti anche alla maggior parte degli utenti (solo proprietario ed Amministratori potranno vederli).
+msgid "If checked, plugin features will be applied also to most logged-in users (a hidden file will be viewable only by its owner and by Administrators)."
+msgstr "Se cliccata, le funzionalità del plugin verranno applicate anche alla maggior parte degli utenti connessi (un file nascosto sarà visibile solo al suo proprietario ed agli Amministratori).
 
 #: config_form.php:21
 msgid "Hide on Public Side"
@@ -72,11 +71,11 @@ msgstr "Nascondi su lato pubblico"
 
 #: config_form.php:25
 msgid "If checked, files will always be hidden on Public side, regardless of whether the user is logged-in or not."
-msgstr "Se selezionata, i file saranno sempre nascosti sul lato pubblico, indipendentemente dal fatto che l'utente abbia effettuato o meno l'accesso."
+msgstr "Se selezionata, i file saranno sempre nascosti sul lato pubblico, indipendentemente dal fatto che l'utente abbia fatto accesso o no."
 
 #: config_form.php:31
-msgid "File List"
-msgstr "Lista file"
+msgid "Admin"
+msgstr "Amministrazione"
 
 #: config_form.php:35
 msgid "Show Hidden Files List"
@@ -87,26 +86,18 @@ msgid "If checked, a link will be added to the main Admin navigation menu to sho
 msgstr "Se selezionata, verrà aggiunta una voce al menu di navigazione principale per mostrare una lista di tutti i file nascosti."
 
 #: config_form.php:47
-msgid "Expand Access"
-msgstr "Amplia accesso"
-
-#: config_form.php:51
-msgid "If checked, access to the File List will be granted to all logged-in users."
-msgstr "Se selezionata, l'accesso alla lista file sarà garantito a tutti gli utenti che abbiano effettuato l'accesso."
-
-#: config_form.php:59
 msgid "Show Original Filename"
 msgstr "Mostra nome file originale"
 
-#: config_form.php:63
-msgid "If checked, the original filenames will be shown in the File List."
-msgstr "Se selezionata, nella lista file verranno mostrati i nomi originali dei file."
+#: config_form.php:51
+msgid "If checked, when browsing hidden files the original filename will be shown."
+msgstr "Se selezionata, nella lista di file nascosti verrà mostrato il nome file originale."
 
 #: browse.php:7
 msgid "This is the file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
 msgid_plural "These are the %s files stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
-msgstr[0] "Questo è il file contenuto nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
-msgstr[1] "Questi sono i %s file contenuti nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
+msgstr[0] "Questo è il file immagazzinato nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
+msgstr[1] "Questi sono i %s file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
 
 #: browse.php:9
 msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."
