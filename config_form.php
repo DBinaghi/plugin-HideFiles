@@ -10,7 +10,7 @@
 	</div>
 	<div class="inputs five columns omega">
 		<p class="explanation">
-			<?php echo __('If checked, plugin feature will be applied also to most logged-in users (a hidden file will be viewable only its owner and by Administrators).'); ?>
+			<?php echo __('If checked, plugin features will be applied also to most logged-in users (a hidden file will be viewable only by its owner and by Administrators).'); ?>
 		</p>
 		<?php echo $view->formCheckbox('hide_files_restrict_users_access', get_option('hide_files_restrict_users_access'), array(), array('1', '0')); ?>
 	</div>
