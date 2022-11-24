@@ -262,7 +262,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				// either owner or administrator
 				$item_id = metadata($file, 'item_id');
 				$item = get_record_by_id('Item', $item_id);
-				if ($item->getOwner()->id == current_user()->id || is_allowed('Plugins', 'edit')) {
+				if (isset(current_user()->id) && ($item->getOwner()->id == current_user()->id || is_allowed('Plugins', 'edit'))) {
 					return false;
 				}
 			} elseif (current_user()->id != '') {
