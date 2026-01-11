@@ -28,13 +28,13 @@
 			</thead>
 			<tbody>
 				<?php $key = 0; ?>
-				<?php $showOriginalFilename = (bool)get_option(hide_files_show_original_filename); ?>
+				<?php $showOriginalFilename = (bool)get_option('hide_files_show_original_filename'); ?>
 				<?php foreach ($files as $file): ?>
 					<tr class="<?php echo (++$key%2 == 1 ? 'odd' : 'even'); ?>">
 						<td>
 							<?php
 								echo file_image('square_thumbnail', array('class' => 'thumbnail'), $file);
-								echo '<a href="' . url('/files/show/' . $file->id) . '" title="' . (!$showOriginalFilenametitle ? $file->original_filename : '') . '">' . ($showOriginalFilename ? $file->original_filename : $file->filename) . '</a>';
+								echo '<a href="' . url('/files/show/' . $file->id) . '" title="' . (!$showOriginalFilename ? $file->original_filename : '') . '">' . ($showOriginalFilename ? $file->original_filename : $file->filename) . '</a>';
 							?>
 						</td>
 						<td>
@@ -60,3 +60,4 @@
 <?php endif; ?>
 
 <?php echo foot(); ?>
+
