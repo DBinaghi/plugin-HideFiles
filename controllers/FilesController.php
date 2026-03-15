@@ -29,7 +29,11 @@ class HideFiles_FilesController extends Omeka_Controller_AbstractActionControlle
 
     public function browseAction()
     {
-        // Respect only GET parameters when browsing.
+		if (!$this->_helper->acl->isAllowed('HideFiles_Index', 'index')) {
+			throw new Zend_Controller_Action_Exception(__('You have no rights to view this list'), 403);
+		}
+
+		// Respect only GET parameters when browsing.
         $this->getRequest()->setParamSources(array('_GET'));
 		
         // Apply controller-provided default sort parameters
