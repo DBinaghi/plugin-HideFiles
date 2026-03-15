@@ -248,29 +248,29 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 		echo $html;
 	}
-	
+
 	public function hookAdminFilesPanelButtons($args)
 	{
-		$this->_adminRecordsPanelButtons($args);
-	}
-	
-	protected function _adminRecordsPanelButtons($args)
-	{
-		$view = $args['view'];
-		
-		$html  = '<div id="public-featured">';
-		if (is_allowed('Items', 'makePublic') ):
+		if (is_allowed('Items', 'makePublic')) {
+			$view = $args['view'];
+			$file = $args['record'];
+			
+			$html  = '<div id="public-featured-panel" class="panel">';
+			$html .= '<h4>' . __('Visibility') . '</h4>';
 			$html .= '<div class="public">';
 			$html .= '<label for="public">' . __('Public') . ':</label>';
-			$html .= $view->formCheckbox('public', $this->_isFilePublic($args['record']), array(), array('1', '0'));
-			$html .= '</div>';
-		endif;
-		$html .= '</div> <!-- end public-featured  div -->';
-		
-		// moves panel just under edit buttons
-		$html .= '<script>jQuery("#public-featured").insertAfter(jQuery("#edit"));</script>';
 
-		echo $html;
+			$html .= $view->formCheckbox('public', $this->_isFilePublic($file), array(), array('1', '0'));
+			$html .= '</div></div>';
+			
+			$html .= '<script>
+				jQuery(document).ready(function($) { 
+					$("#public-featured-panel").insertAfter("#save"); 
+				});
+			</script>';
+			
+			echo $html;
+		}
 	}
 		
 	protected function _isFilePublic($file)
