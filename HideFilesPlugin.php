@@ -122,7 +122,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				'hide-files/:action/*',
 				array(
 					'module'	 => 'hide-files',
-					'controller' => 'index',
+					'controller' => 'file',
 					'action'	 => 'browse'
 				)
 			)
