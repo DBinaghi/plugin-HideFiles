@@ -1,15 +1,13 @@
 # Translation for the Hide Files plugin for Omeka.
 # This file is distributed under the same license as the Omeka plugin.
-# Daniele Binaghi <admin@bitoteko.it>, 2021.
+# Daniele Binaghi <admin@bitoteko.it>, 2021-2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: HideFiles\n"
 "Report-Msgid-Bugs-To: http://github.com/Daniel-KM/Reference/issues\n"
-"POT-Creation-Date: 2021-06-27 12:46-0000\n"
-"PO-Revision-Date: 2021-07-08 10:35-0001\n"
-"PO-Revision-Date: 2021-10-11 14:55-0001\n"
+"POT-Creation-Date: 2026-03-15 10:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,22 +24,36 @@ msgstr ""
 msgid "%sWarning%s: this will remove all information added by this plugin, thus files will no more be hidden."
 msgstr ""
 
-#: HideFilesPlugin.php:141
-#: browse.php:1
+#: controllers/IndexController.php:36
+msgid "You do not have the rights to view this list."
+msgstr ""
+
+#: HideFilesPlugin.php:141 browse.php:1
 msgid "Hidden Files"
 msgstr ""
 
-#: HideFilesPlugin.php:158
-#: HideFilesPlugin.php:179
+#: HideFilesPlugin.php:152
+msgid "You do not have the rights to edit this file."
+msgstr ""
+
+#: HideFilesPlugin.php:191
+msgid "File Status"
+msgstr ""
+
+#: HideFilesPlugin.php:158 HideFilesPlugin.php:192 HideFilesPlugin.php:204
 msgid "Public"
 msgstr ""
 
-#: HideFilesPlugin.php:158
+#: HideFilesPlugin.php:193
 msgid "Yes"
 msgstr ""
 
-#: HideFilesPlugin.php:158
+#: HideFilesPlugin.php:193
 msgid "No"
+msgstr ""
+
+#: HideFilesPlugin.php:202
+msgid "Visibility"
 msgstr ""
 
 #: HideFilesPlugin.php:277
@@ -62,6 +74,10 @@ msgstr ""
 
 #: config_form.php:13
 msgid "If checked, plugin features will be applied also to most logged-in users (a hidden file will be viewable only by its owner and by Administrators)."
+msgstr ""
+
+#: config_form.php:17
+msgid "Note: visitors who are not logged in will never be able to see non-public files, regardless of this setting."
 msgstr ""
 
 #: config_form.php:21
@@ -85,18 +101,26 @@ msgid "If checked, a link will be added to the main Admin navigation menu to sho
 msgstr ""
 
 #: config_form.php:47
-msgid "Show Original Filename"
+msgid "Expand Access to File List"
 msgstr ""
 
 #: config_form.php:51
+msgid "If checked, contributors (and all derived roles) will also be able to access the hidden files list."
+msgstr ""
+
+#: config_form.php:57
+msgid "Show Original Filename"
+msgstr ""
+
+#: config_form.php:61
 msgid "If checked, when browsing hidden files the original filename will be shown."
 msgstr ""
 
 #: browse.php:7
 msgid "This is the file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
 msgid_plural "These are the %s files stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
-msgstr[0] "Questo è il file immagazzinato nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
-msgstr[1] "Questi sono i %s file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
+msgstr[0] ""
+msgstr[1] ""
 
 #: browse.php:9
 msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."

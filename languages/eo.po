@@ -1,16 +1,16 @@
 # Translation for the Hide Files plugin for Omeka.
 # This file is distributed under the same license as the Omeka plugin.
-# Daniele Binaghi <admin@bitoteko.it>, 2021-2026.
+# Daniele Binaghi <admin@bitoteko.it>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: HideFiles\n"
 "Report-Msgid-Bugs-To: http://github.com/Daniel-KM/Reference/issues\n"
 "POT-Creation-Date: 2026-03-15 10:45+0100\n"
-"PO-Revision-Date: 2026-03-15 10:57+0100\n"
+"PO-Revision-Date: 2026-03-15 10:47+0100\n"
 "Last-Translator: Daniele Binaghi\n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,126 +19,126 @@ msgstr ""
 
 #: HideFilesPlugin.php:13
 msgid "Hidden by Hide Files plugin"
-msgstr "Nascosto dal plugin Hide Files"
+msgstr "Kaŝita de la kromprogramo Hide Files"
 
 #: HideFilesPlugin.php:68
 msgid "%sWarning%s: this will remove all information added by this plugin, thus files will no more be hidden."
-msgstr "%sAttenzione%s: questo rimuoverà tutte le informazioni aggiunte da questo plugin, di conseguenza nessun file sarà più nascosto."
+msgstr "%sAtentu%s: ĉi tio forigos ĉiujn informojn aldonitajn de ĉi tiu kromprogramo, tial dosieroj ne plu estos kaŝitaj."
 
 #: controllers/IndexController.php:36
 msgid "You do not have the rights to view this list."
-msgstr "Non hai i permessi per visualizzare questa lista."
+msgstr "Vi ne rajtas vidi ĉi tiun liston."
 
 #: HideFilesPlugin.php:141 browse.php:1
 msgid "Hidden Files"
-msgstr "File nascosti"
+msgstr "Kaŝitaj Dosieroj"
 
 #: HideFilesPlugin.php:152
 msgid "You do not have the rights to edit this file."
-msgstr "Non hai i permessi per modificare questo file."
+msgstr "Vi ne rajtas redakti ĉi tiun dosieron."
 
 #: HideFilesPlugin.php:191
 msgid "File Status"
-msgstr "Stato del file"
+msgstr "Statuso de la dosiero"
 
 #: HideFilesPlugin.php:158 HideFilesPlugin.php:192 HideFilesPlugin.php:204
 msgid "Public"
-msgstr "Pubblico"
+msgstr "Publika"
 
 #: HideFilesPlugin.php:193
 msgid "Yes"
-msgstr "Sì"
+msgstr "Jes"
 
 #: HideFilesPlugin.php:193
 msgid "No"
-msgstr "No"
+msgstr "Ne"
 
 #: HideFilesPlugin.php:202
 msgid "Visibility"
-msgstr "Visibilità"
+msgstr "Videbleco"
 
 #: HideFilesPlugin.php:277
 msgid "The file is now Public, so any visitor and user can see it."
-msgstr "Il file è ora pubblico, ovvero ogni visitatore ed utente potrà vederlo."
+msgstr "La dosiero estas nun publika, do ĉiu vizitanto kaj uzanto povas vidi ĝin."
 
 #: HideFilesPlugin.php:279
 msgid "Access to the file has now been restricted via the Hide Files plugin."
-msgstr "L'accesso al file è stato ora ristretto per mezzo del plugin Hide Files."
+msgstr "La aliro al la dosiero estas nun limigita per la kromprogramo Hide Files."
 
 #: config_form.php:5
 msgid "Scope"
-msgstr "Ambito"
+msgstr "Amplekso"
 
 #: config_form.php:9
 msgid "Restrict Users Access"
-msgstr "Restringi accesso utenti"
+msgstr "Limigi alironon de uzantoj"
 
 #: config_form.php:13
 msgid "If checked, plugin features will be applied also to most logged-in users (a hidden file will be viewable only by its owner and by Administrators)."
-msgstr "Se cliccata, le funzionalità del plugin verranno applicate anche alla maggior parte degli utenti connessi (un file nascosto sarà visibile solo al suo proprietario ed agli Amministratori)."
+msgstr "Se markita, la funkcioj de la kromprogramo estos aplikataj ankaŭ al la plej multaj ensalutintaj uzantoj (kaŝita dosiero estos videbla nur de ĝia posedanto kaj de Administrantoj)."
 
 #: config_form.php:17
 msgid "Note: visitors who are not logged in will never be able to see non-public files, regardless of this setting."
-msgstr "Nota: i visitatori non connessi non potranno mai visualizzare i file non pubblici, indipendentemente da questa impostazione."
+msgstr "Noto: vizitantoj kiuj ne estas ensalutintaj neniam povos vidi ne-publikajn dosierojn, sendepende de ĉi tiu agordo."
 
 #: config_form.php:21
 msgid "Hide on Public Side"
-msgstr "Nascondi su lato pubblico"
+msgstr "Kaŝi en publika flanko"
 
 #: config_form.php:25
 msgid "If checked, files will always be hidden on Public side, regardless of whether the user is logged-in or not."
-msgstr "Se selezionata, i file saranno sempre nascosti sul lato pubblico, indipendentemente dal fatto che l'utente abbia fatto accesso o no."
+msgstr "Se markita, dosieroj ĉiam estos kaŝitaj en la publika flanko, sendepende de tio ĉu la uzanto estas ensalutinta aŭ ne."
 
 #: config_form.php:31
 msgid "Admin"
-msgstr "Amministrazione"
+msgstr "Administrado"
 
 #: config_form.php:35
 msgid "Show Hidden Files List"
-msgstr "Mostra lista file nascosti"
+msgstr "Montri liston de kaŝitaj dosieroj"
 
 #: config_form.php:39
 msgid "If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files."
-msgstr "Se selezionata, verrà aggiunta una voce al menu di navigazione principale per mostrare una lista di tutti i file nascosti."
+msgstr "Se markita, ligilo estos aldonita al la ĉefa navigada menuo de Administrado por montri liston de ĉiuj kaŝitaj dosieroj."
 
 #: config_form.php:47
 msgid "Expand Access to File List"
-msgstr "Estendi accesso a lista file"
+msgstr "Pligrandigi aliron al listo de dosieroj"
 
 #: config_form.php:51
 msgid "If checked, contributors (and all derived roles) will also be able to access the hidden files list."
-msgstr "Se selezionata, anche i contributori (e tutti i ruoli derivati) potranno accedere alla lista dei file nascosti."
+msgstr "Se markita, ankaŭ kontribuantoj (kaj ĉiuj roloj derivitaj de tiu) povos aliri la liston de kaŝitaj dosieroj."
 
 #: config_form.php:57
 msgid "Show Original Filename"
-msgstr "Mostra nome file originale"
+msgstr "Montri originalan dosiernomon"
 
 #: config_form.php:61
 msgid "If checked, when browsing hidden files the original filename will be shown."
-msgstr "Se selezionata, nella lista di file nascosti verrà mostrato il nome file originale."
+msgstr "Se markita, dum la konsultado de kaŝitaj dosieroj la originala dosiernomo estos montrata."
 
 #: browse.php:7
 msgid "This is the file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
 msgid_plural "These are the %s files stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
-msgstr[0] "Questo è il file immagazzinato nell'archivio e nascosto grazie al plugin <strong>Hide Files</strong>."
-msgstr[1] "Questi sono i %s file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
+msgstr[0] "Ĉi tiu estas la dosiero konservita en la deponejo kaj kaŝita per la kromprogramo <strong>Hide Files</strong>."
+msgstr[1] "Ĉi tiuj estas la %s dosieroj konservitaj en la deponejo kaj kaŝitaj per la kromprogramo <strong>Hide Files</strong>."
 
 #: browse.php:9
 msgid "Click on a filename to access that specific file, or on an Item name to access the associated Item."
-msgstr "Clicca sul nome di un file per accedervi, o sul nome di un documento per accedere al documento associato."
+msgstr "Klaku sur dosiernomon por aliri tiun dosieron, aŭ sur nomon de Ero por aliri la asociitan Eron."
 
 #: browse.php:18
 msgid "Filename"
-msgstr "Nome del file"
+msgstr "Dosiernomo"
 
 #: browse.php:19
 msgid "Date Added"
-msgstr "Data aggiunta"
+msgstr "Dato de aldono"
 
 #: browse.php:20
 msgid "Item"
-msgstr "Documento"
+msgstr "Ero"
 
 #: browse.php:53
 msgid "There seems to be no file stored in the repository and hidden via the <strong>Hide Files</strong> plugin."
-msgstr "Non sembrano esserci file immagazzinati nell'archivio e nascosti grazie al plugin <strong>Hide Files</strong>."
+msgstr "Ŝajnas ke neniu dosiero estas konservita en la deponejo kaj kaŝita per la kromprogramo <strong>Hide Files</strong>."
