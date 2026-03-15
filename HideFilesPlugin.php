@@ -5,7 +5,7 @@
  * 
  * @version 1.4
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright Daniele Binaghi, 2021
+ * @copyright Daniele Binaghi, 2021-2026
  * @package HideFiles
  */
 
@@ -365,13 +365,19 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public function hookAfterSaveFile($args) 
 	{
 		$post = $args['post'];
-		if (!isset($post['public'])) return;
-		$isPublic = $post['public'];
-	
-		$db = get_db();
-		$sql = "UPDATE `{$this->_db->File}` SET `public` = " . $isPublic . " WHERE `id` = " . $args['record']->id;
-		$db->query($sql);
+		$record = $args['record'];
 		
+		if (!is_allowed('Items', 'makePublic')) {
+			return;
+		}
+
+		if (!isset($post['public'])) return;
+		$isPublic = (int)$post['public'];
+
+		$db = get_db();
+		$sql = "UPDATE `{$db->File}` SET `public` = ? WHERE `id` = ?";
+		$db->query($sql, array($isPublic, $record->id));
+
 		$flash = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
 		if ($isPublic) {
 			$message = __('The file is now Public, so any visitor and user can see it.');
