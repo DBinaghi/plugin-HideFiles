@@ -154,7 +154,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		if ($controller == 'files') {
 			$file = get_current_record('file', false);
 			
-			if ($file && $this->_isFileHidden($file)) {
+			if ($file && $this->isFileHidden($file)) {
 				if (!is_allowed('Items', 'makePublic')) {
 					throw new Zend_Controller_Action_Exception(__('You do not have the rights to edit this file.'), 403);
 				}
@@ -185,7 +185,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 		if ($controller == 'files' && $action == 'show') {
 			$file = get_current_record('file', false);
-			if ($this->_isFileHidden($file)) {
+			if ($this->isFileHidden($file)) {
 				// blocks access to public file show page, showing item page instead
 				queue_js_string("window.location.href = '" . url('items/show/' . $file->item_id) . "'");
  			}
@@ -264,7 +264,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		return $cache[$file->id];
 	}
 		
-	protected function _isFileHidden($file)
+	public function isFileHidden($file)
 	{
 		// checks if file is public and everyone can see it
 		if ($this->_isFilePublic($file)) {
@@ -296,7 +296,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public function filterFileMarkup($html, $args)
 	{
 		$file = $args['file'];
-		if ($this->_isFileHidden($file)) {
+		if ($this->isFileHidden($file)) {
 			if (strpos($html, HIDEFILES_THUMBNAIL) === false) {
 				// replaces thumbnail with plugins' one
 				$pattern = "!(?<=src\=['\"]).+(?=['\"](\s|\/\>))!";
@@ -316,7 +316,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public function filterFileMarkupOptions($options, $args)
 	{
 		$file = $args['file'];
-		if ($this->_isFileHidden($file)) {
+		if ($this->isFileHidden($file)) {
 			$options['linkToFile'] = false;
 		}
 		
@@ -326,7 +326,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public function filterImageTagAttributes($attrs, $args)
 	{
 		$file = $args['file'];
-		if ($this->_isFileHidden($file)) {
+		if ($this->isFileHidden($file)) {
 			$attrs['src'] = HIDEFILES_THUMBNAIL;
 		}
 		
@@ -385,64 +385,61 @@ class Api_File extends Omeka_Record_Api_AbstractRecordAdapter
 	 * @param File $record
 	 * @return array
 	 */
-	public function getRepresentation(Omeka_Record_AbstractRecord $record)
-	{	
+    public function getRepresentation(Omeka_Record_AbstractRecord $record)
+    {	
+        $plugin = new HideFilesPlugin;
+        $isHidden = $plugin->isFileHidden($record);
 
-		$is_public = $record->public;
+        if (!$isHidden) {
+            $representation = array(
+                'id' => $record->id,
+                'public' => (bool)$record->public,
+                'url' => self::getResourceUrl("/files/{$record->id}"),
+                'file_urls' => array(
+                    'original' => $record->getWebPath(),
+                    'fullsize' => $record->has_derivative_image ? $record->getWebPath('fullsize') : null,
+                    'thumbnail' => $record->has_derivative_image ? $record->getWebPath('thumbnail') : null,
+                    'square_thumbnail' => $record->has_derivative_image ? $record->getWebPath('square_thumbnail') : null,
+                ),
+                'added' => self::getDate($record->added),
+                'modified' => self::getDate($record->modified),
+                'filename' => $record->filename,
+                'authentication' => $record->authentication,
+                'has_derivative_image' => (bool) $record->has_derivative_image,
+                'mime_type' => $record->mime_type,
+                'order' => $record->order,
+                'original_filename' => $record->original_filename,
+                'size' => $record->size,
+                'stored' => (bool) $record->stored,
+                'type_os' => $record->type_os,
+                'metadata' => json_decode($record->metadata, true),
+            );
+        } else {
+            $representation = array(
+                'id' => $record->id,
+                'public' => (bool)$record->public,
+                'added' => self::getDate($record->added),
+                'modified' => self::getDate($record->modified),
+                'has_derivative_image' => (bool) $record->has_derivative_image,
+                'mime_type' => $record->mime_type,
+                'file_urls' => array(
+                    'original' => WEB_ROOT . HIDEFILES_THUMBNAIL,
+                    'square_thumbnail' => WEB_ROOT . HIDEFILES_THUMBNAIL,
+                ),
+                'status' => 'hidden_by_plugin',
+            );
+        }
 
-		if ($is_public) {
+        $representation['item'] = array(
+            'id' => $record->item_id,
+            'url' => self::getResourceUrl("/items/{$record->item_id}"),
+            'resource' => 'items',
+        );
+        
+        $representation['element_texts'] = $this->getElementTextRepresentations($record);
 
-			$representation = array(
-				'id' => $record->id,
-				'public' => $record->public,
-				'url' => self::getResourceUrl("/files/{$record->id}"),
-				'file_urls' => array(
-					'original' => $record->getWebPath(),
-					'fullsize' => $record->has_derivative_image ? $record->getWebPath('fullsize') : null,
-					'thumbnail' => $record->has_derivative_image ? $record->getWebPath('thumbnail') : null,
-					'square_thumbnail' => $record->has_derivative_image ? $record->getWebPath('square_thumbnail') : null,
-				),
-				'added' => self::getDate($record->added),
-				'modified' => self::getDate($record->modified),
-				'filename' => $record->filename,
-				'authentication' => $record->authentication,
-				'has_derivative_image' => (bool) $record->has_derivative_image,
-				'mime_type' => $record->mime_type,
-				'order' => $record->order,
-				'original_filename' => $record->original_filename,
-				'size' => $record->size,
-				'stored' => (bool) $record->stored,
-				'type_os' => $record->type_os,
-				'metadata' => json_decode($record->metadata, true),
-			);
-
-		} else {
-
-			$representation = array(
-				'id' => $record->id,
-				'public' => $record->public,
-				'added' => self::getDate($record->added),
-				'modified' => self::getDate($record->modified),
-				'has_derivative_image' => (bool) $record->has_derivative_image,
-				'mime_type' => $record->mime_type,
-				'order' => $record->order,
-				'size' => $record->size,
-				'stored' => (bool) $record->stored,
-				'type_os' => $record->type_os,
-				'metadata' => json_decode($record->metadata, true),
-			);
-
-		}
-
-		$representation['item'] = array(
-			'id' => $record->item_id,
-			'url' => self::getResourceUrl("/items/{$record->item_id}"),
-			'resource' => 'items',
-		);
-		$representation['element_texts'] = $this->getElementTextRepresentations($record);
-
-		return $representation;
-	}
+        return $representation;
+    }
 
 	/**
 	 * Set POST data to a file.
