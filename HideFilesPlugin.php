@@ -5,7 +5,7 @@
  * 
  * @version 1.4
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright Daniele Binaghi, 2021-2026
+ * @copyright Daniele Binaghi, 2021
  * @package HideFiles
  */
 
@@ -121,9 +121,9 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			new Zend_Controller_Router_Route(
 				'hide-files/:action/*',
 				array(
-					'module'     => 'hide-files',
+					'module'	 => 'hide-files',
 					'controller' => 'index',
-					'action'     => 'browse'
+					'action'	 => 'browse'
 				)
 			)
 		);
@@ -150,54 +150,29 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		$request = Zend_Controller_Front::getInstance()->getRequest();
 		$controller = $request->getControllerName();
 		$action = $request->getActionName();
+
 		if ($controller == 'files') {
 			$file = get_current_record('file', false);
-			if ($action == 'show') {
-				if ($this->_isFileHidden($file)) {
-					queue_js_string("
-						document.addEventListener('DOMContentLoaded', function() {
-							var children = document.getElementById('edit').children;
-							for (var i = 0; i < children.length; i++) {
-								var child = children[i];
-								if (child.href.indexOf('admin/files/edit') > -1) {
-									child.remove();
-								}
-							}
-							
-							var panel = document.getElementById('file-links');
-							if (panel.hasChildNodes()) {
-								panel.querySelector('ul').outerHTML = '<p style=\'color:red\'>" . HIDEFILES_REPLACEMENT_STRING . "</p>';
-							}
-							
-							var panel = document.getElementById('format-metadata').childNodes[3];
-							if (panel.hasChildNodes()) {
-								panel.childNodes[3].innerHTML = '<span style=\'color:red\'>" . HIDEFILES_REPLACEMENT_STRING . "</span>';
-							}
-
-							var ulist = document.getElementById('output-format-list');
-							ulist.outerHTML = '<p style=\'color:red\'>" . HIDEFILES_REPLACEMENT_STRING . "</p>';
-						}, false);
-					");
-				}	
-			} elseif ($action == 'edit') {
-				$file = get_current_record('file', false);
-				if ($this->_isFileHidden($file) && !is_allowed('Items', 'makePublic')) {
-					throw new Zend_Controller_Action_Exception(__('You do not have the rights to edit this file.', 403));
+			
+			if ($file && $this->_isFileHidden($file)) {
+				if (!is_allowed('Items', 'makePublic')) {
+					throw new Zend_Controller_Action_Exception(__('You do not have the rights to edit this file.'), 403);
 				}
 			}
+			
 		} elseif ($controller == 'items') {
 			if ($action == 'edit') {
 				// removes "edit" link from hidden files in items/edit files tab
 				queue_js_string("
 					document.addEventListener('DOMContentLoaded', function() {
-						var links = document.getElementById('file-list').getElementsByClassName('edit');
-						for (var i = links.length-1; i > -1; i--) {
-							if (links[i].parentNode.parentNode.parentNode.innerHTML.indexOf('" . HIDEFILES_THUMBNAIL . "') !== -1) {
-								links[i].parentNode.remove();
+						var links = document.querySelectorAll('#file-list .edit a');
+						links.forEach(function(link) {
+							if (link.closest('tr').innerHTML.indexOf('" . HIDEFILES_THUMBNAIL . "') !== -1) {
+								link.parentElement.remove();
 							}
-						}
+						});
 					}, false);
-				");	
+				"); 
 			}
 		}
 	}
@@ -234,21 +209,17 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public function hookAdminFilesShowSidebar($args)
 	{
 		$args['record'] = $args['file'];
-		$this->_adminRecordsShowSidebar($args);
+		$file = $args['record']; 
+
+		echo '<div class="public-featured panel">';
+		echo '<h4>' . __('File Status') . '</h4>';
+		echo '<p><span class="label">' . __('Public') . ': </span>' 
+			 . ($this->_isFilePublic($file) ? __('Yes') : __('No')) . '</p>';
+		echo '</div>';
+		
+		echo '<script>jQuery(".public-featured").insertAfter("#edit");</script>';
 	}
 	
-	protected function _adminRecordsShowSidebar($args)
-	{
-		$html = '<div class="public-featured panel">';
-		$html .= '<p><span class="label">' . __('Public') . ': </span>' . ($this->_isFilePublic($args['file']) ? __('Yes') : __('No')) . '</p>';
-		$html .= '</div>';
-
- 		// moves panel just under edit buttons
-		$html .= '<script>jQuery(".public-featured").insertAfter(jQuery("#edit"));</script>';
-
-		echo $html;
-	}
-
 	public function hookAdminFilesPanelButtons($args)
 	{
 		if (is_allowed('Items', 'makePublic')) {
@@ -362,7 +333,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		return $attrs;
 	}
 	
-	public function hookAfterSaveFile($args) 
+	public function hookAfterSaveFile($args)
 	{
 		$post = $args['post'];
 		$record = $args['record'];
@@ -387,7 +358,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		$flash->addMessage($message, 'alert');
 	}
 
-	public function hookFilesBrowseSql($args) 
+	public function hookFilesBrowseSql($args)
 	{
 		// Filters out all public files and sort results by added date
 		$select = $args['select'];
@@ -398,7 +369,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	protected function _columnExists($tableName, $columnName)
 	{
 		$db = get_db();
-		$result = $db->fetchCol("SHOW COLUMNS FROM `$tableName` LIKE ?");
+		$sql = "SHOW COLUMNS FROM `$tableName` LIKE ?";
 		return (bool) $db->fetchOne($sql, array($columnName));
 	}
 }
@@ -408,14 +379,14 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 class Api_File extends Omeka_Record_Api_AbstractRecordAdapter
 {
-    /**
-     * Get the REST API representation for a file.
-     * 
-     * @param File $record
-     * @return array
-     */
-    public function getRepresentation(Omeka_Record_AbstractRecord $record)
-    {	
+	/**
+	 * Get the REST API representation for a file.
+	 * 
+	 * @param File $record
+	 * @return array
+	 */
+	public function getRepresentation(Omeka_Record_AbstractRecord $record)
+	{	
 
 		$is_public = $record->public;
 
@@ -464,37 +435,37 @@ class Api_File extends Omeka_Record_Api_AbstractRecordAdapter
 		}
 
 		$representation['item'] = array(
-            'id' => $record->item_id,
-            'url' => self::getResourceUrl("/items/{$record->item_id}"),
-            'resource' => 'items',
-        );
-        $representation['element_texts'] = $this->getElementTextRepresentations($record);
+			'id' => $record->item_id,
+			'url' => self::getResourceUrl("/items/{$record->item_id}"),
+			'resource' => 'items',
+		);
+		$representation['element_texts'] = $this->getElementTextRepresentations($record);
 
-        return $representation;
-    }
+		return $representation;
+	}
 
-    /**
-     * Set POST data to a file.
-     * 
-     * @param File $record
-     * @param mixed $data
-     */
-    public function setPostData(Omeka_Record_AbstractRecord $record, $data)
-    {
-        if (isset($data->order)) {
-            $record->order = $data->order;
-        }
-        $this->setElementTextData($record, $data);
-    }
+	/**
+	 * Set POST data to a file.
+	 * 
+	 * @param File $record
+	 * @param mixed $data
+	 */
+	public function setPostData(Omeka_Record_AbstractRecord $record, $data)
+	{
+		if (isset($data->order)) {
+			$record->order = $data->order;
+		}
+		$this->setElementTextData($record, $data);
+	}
 
-    /**
-     * Set PUT data to a file.
-     * 
-     * @param File $record
-     * @param mixed $data
-     */
-    public function setPutData(Omeka_Record_AbstractRecord $record, $data)
-    {
-        $this->setPostData($record, $data);
-    }
+	/**
+	 * Set PUT data to a file.
+	 * 
+	 * @param File $record
+	 * @param mixed $data
+	 */
+	public function setPutData(Omeka_Record_AbstractRecord $record, $data)
+	{
+		$this->setPostData($record, $data);
+	}
 }
