@@ -3,7 +3,7 @@
 /**
  * Hide Files plugin for Omeka
  * 
- * @version 1.4
+ * @version 1.5
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @copyright Daniele Binaghi, 2021-2026
  * @package HideFiles
@@ -122,7 +122,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				'hide-files/:action/*',
 				array(
 					'module'	 => 'hide-files',
-					'controller' => 'files',
+					'controller' => 'index',
 					'action'	 => 'browse'
 				)
 			)
