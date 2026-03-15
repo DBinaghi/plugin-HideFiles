@@ -32,13 +32,13 @@
 
 <div class="field">
 	<div class="two columns alpha">
-		<?php echo $view->formLabel('hide_files_show_files_list', __('Show Hidden Files List')); ?>
+		<?php echo $view->formLabel('hide_files_show_file_list', __('Show Hidden Files List')); ?>
 	</div>
 	<div class="inputs five columns omega">
 		<p class="explanation">
 			<?php echo __('If checked, a link will be added to the main Admin navigation menu to show a list of all hidden files.'); ?>
 		</p>
-		<?php echo $view->formCheckbox('hide_files_show_files_list', get_option('hide_files_show_files_list'), array(), array('1', '0')); ?>
+		<?php echo $view->formCheckbox('hide_files_show_file_list', get_option('hide_files_show_file_list'), array(), array('1', '0')); ?>
 	</div>
 </div>
 
