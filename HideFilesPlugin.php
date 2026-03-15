@@ -180,10 +180,10 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 					");
 				}	
 			} elseif ($action == 'edit') {
-				if ($this->_isFileHidden($file)) {
-					// blocks access to admin file edit page, showing show page instead
-					queue_js_string("window.location.href = '" . url('files/show/' . $file->id) . "'");
-				}				
+				$file = get_current_record('file', false);
+				if ($this->_isFileHidden($file) && !is_allowed('Items', 'makePublic')) {
+					throw new Zend_Controller_Action_Exception(__('You do not have the rights to edit this file.', 403));
+				}
 			}
 		} elseif ($controller == 'items') {
 			if ($action == 'edit') {
