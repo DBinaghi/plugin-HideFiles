@@ -1,6 +1,6 @@
 <?php
 
-class HideFiles_IndexController extends Omeka_Controller_AbstractActionController
+class HideFiles_FilesController extends Omeka_Controller_AbstractActionController
 {
     const RECORDS_PER_PAGE_SETTING = 'records_per_page_setting';
 
