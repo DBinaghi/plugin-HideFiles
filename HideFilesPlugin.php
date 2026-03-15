@@ -3,7 +3,7 @@
 /**
  * Hide Files plugin for Omeka
  * 
- * @version 1.5
+ * @version 1.4
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @copyright Daniele Binaghi, 2021-2026
  * @package HideFiles
@@ -109,7 +109,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		if ((bool)get_option('hide_files_expand_access_file_list')) {
 			// contributors (and all derived roles) are able to access
 			$acl = $args['acl'];
-			$acl->allow('contributor', 'HideFiles_Index', array('index', 'browse'));
+			$acl->allow('contributor', 'HideFiles_Files', array('index', 'browse'));
 		}
 	}
 
@@ -122,7 +122,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 				'hide-files/:action/*',
 				array(
 					'module'	 => 'hide-files',
-					'controller' => 'index',
+					'controller' => 'files',
 					'action'	 => 'browse'
 				)
 			)
