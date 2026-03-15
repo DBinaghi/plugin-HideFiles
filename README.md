@@ -1,16 +1,30 @@
 # plugin-HideFiles
 Plugin for Omeka Classic. Allows to hide specific files (for copyright or any other reason) from visitors and users
 
+## Security & Privacy (v1.5+)
+This version introduces a robust security layer to ensure that hidden files are protected across all Omeka entry points:
+
+### 🔒 Server-Side Protection
+* **Access Control:** Unauthorized users (based on plugin settings) will encounter a `403 Forbidden` error when trying to access `files/show` or `files/edit` for a hidden file. 
+* **ACL Integration:** The "Hidden Files" admin list is now strictly protected by Omeka's Access Control List. Only authorized roles can browse it.
+* **SQL Safety:** All database interactions use prepared statements to prevent SQL Injection vulnerabilities.
+
+### 🌐 REST API Security
+The plugin is now fully integrated with the Omeka REST API. When a file is flagged as hidden:
+* **Data Masking:** Internal filenames and original file paths are completely removed from the API response.
+* **Placeholder Media:** Direct links to original files and thumbnails are replaced with a secure placeholder icon (`file_hidden.png`).
+* **Context Aware:** Administrators and file owners can still see full data via API, while the public sees the restricted version.
+
+### 🛠 Core Requirements
+To enable the "Public" checkbox in the file edit page, ensure your admin theme (or core) fires the following hook in `admin/themes/default/files/edit.php`:
+`<?php fire_plugin_hook("admin_files_panel_buttons", array('view'=>$this, 'record'=>$file)); ?>`
+
 ## Warning
 This is a stub. I'm still adding checks to hide original file information on both Admin and Public side, so it should still be used to experiment, and not on production. 
 
 Use it at your own risk.
 
 It’s always recommended to backup your files and your databases and to check your archives regularly so you can roll back if needed.
-
-## ToDo
-- Look for more efficient hookAdminHead coding (I’m using DOM there, jquery would have been more efficient but if I try to load it it gets commented out in the page’s head);
-- Amend/improve column check in _columnExists function (name space clause is missing, as I could not find a way to get the db’s name);
 
 ## Troubleshooting
 See online issues on the <a href="https://github.com/DBinaghi/plugin-RelatedContent/issues" target="_blank">plugin issues</a> page on GitHub.
