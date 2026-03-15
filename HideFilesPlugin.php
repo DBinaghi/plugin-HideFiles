@@ -3,7 +3,7 @@
 /**
  * Hide Files plugin for Omeka
  * 
- * @version 1.3
+ * @version 1.4
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @copyright Daniele Binaghi, 2021
  * @package HideFiles
@@ -21,7 +21,9 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		'initialize',
 		'config',
 		'config_form',
-		'define_acl', 
+		'define_acl',
+		'define_routes',
+		'upgrade',
 		'admin_head',
 		'public_head',
 		'admin_files_show_sidebar',
@@ -54,8 +56,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
 	public function hookUninstall()
 	{
+		$db = get_db();
 		if (self::_columnExists($db->File, 'public')) {
-			$db = get_db();
 			$db->query("ALTER TABLE {$db->File} DROP COLUMN `public`");
 		}
 
@@ -108,6 +110,38 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			// contributors (and all derived roles) are able to access
 			$acl = $args['acl'];
 			$acl->allow('contributor', 'HideFiles_Index', array('index', 'browse'));
+		}
+	}
+
+	public function hookDefineRoutes($args)
+	{
+		$router = $args['router'];
+		$router->addRoute(
+			'hide_files',
+			new Zend_Controller_Router_Route(
+				'hide-files/:action/*',
+				array(
+					'module'     => 'hide-files',
+					'controller' => 'index',
+					'action'     => 'browse'
+				)
+			)
+		);
+	}
+
+	public function hookUpgrade($args)
+	{
+		// Migrate option name typo from versions prior to 1.4:
+		// 'hide_files_show_files_list' (wrong) -> 'hide_files_show_file_list' (correct)
+		$oldValue = get_option('hide_files_show_files_list');
+		if ($oldValue !== null) {
+			set_option('hide_files_show_file_list', $oldValue);
+			delete_option('hide_files_show_files_list');
+		}
+
+		// Add new option introduced in 1.4 if not already present
+		if (get_option('hide_files_expand_access_file_list') === null) {
+			set_option('hide_files_expand_access_file_list', 0);
 		}
 	}
 
@@ -241,11 +275,22 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		
 	protected function _isFilePublic($file)
 	{
-		$db = get_db();
-		$sql = "SELECT public FROM `{$this->_db->File}` WHERE `id` = " . $file->id;
-		$results = $db->fetchCol($sql);
+		static $cache = array();
 
-		return $results[0];
+		if (!isset($cache[$file->id])) {
+			$db = get_db();
+			$fileTable = $db->getTable('File');
+			
+			$fileRecord = $fileTable->find($file->id);
+			
+			if ($fileRecord) {
+				$cache[$file->id] = (bool) $fileRecord->public;
+			} else {
+				$cache[$file->id] = false;
+			}
+		}
+
+		return $cache[$file->id];
 	}
 		
 	protected function _isFileHidden($file)
@@ -272,6 +317,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 			}
 		}
 
+		// note: users not logged in never see non-public files,
+		// regardless of the options above
 		return true;	
 	}
 	
@@ -279,7 +326,7 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	{
 		$file = $args['file'];
 		if ($this->_isFileHidden($file)) {
-			if (strpos($html, HIDEFILES_THUMBNAIL) < 0) {
+			if (strpos($html, HIDEFILES_THUMBNAIL) === false) {
 				// replaces thumbnail with plugins' one
 				$pattern = "!(?<=src\=['\"]).+(?=['\"](\s|\/\>))!";
 				$html = preg_replace($pattern, HIDEFILES_THUMBNAIL, $html);
@@ -345,13 +392,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	protected function _columnExists($tableName, $columnName)
 	{
 		$db = get_db();
-		$sql = "
-			SELECT COLUMN_NAME
-			FROM INFORMATION_SCHEMA.COLUMNS
-			WHERE TABLE_NAME = '$tableName';
-		";
-		$result = $db->fetchCol($sql);
-		return in_array($columnName, $result);
+		$result = $db->fetchCol("SHOW COLUMNS FROM `$tableName` LIKE '$columnName'");
+		return !empty($result);
 	}
 }
 
@@ -413,11 +455,9 @@ class Api_File extends Omeka_Record_Api_AbstractRecordAdapter
 				'metadata' => json_decode($record->metadata, true),
 			);
 
-
 		}
 
-        
-	$representation['item'] = array(
+		$representation['item'] = array(
             'id' => $record->item_id,
             'url' => self::getResourceUrl("/items/{$record->item_id}"),
             'resource' => 'items',
