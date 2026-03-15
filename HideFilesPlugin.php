@@ -392,8 +392,8 @@ class HideFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	protected function _columnExists($tableName, $columnName)
 	{
 		$db = get_db();
-		$result = $db->fetchCol("SHOW COLUMNS FROM `$tableName` LIKE '$columnName'");
-		return !empty($result);
+		$result = $db->fetchCol("SHOW COLUMNS FROM `$tableName` LIKE ?");
+		return (bool) $db->fetchOne($sql, array($columnName));
 	}
 }
 
